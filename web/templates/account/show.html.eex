@@ -1,0 +1,13 @@
+<h1>Showing Account</h1>
+
+<table class="table">
+  <tr>
+    <td><b><%= @account.bank %></b></td>
+    <td><b><%= @account.label %></b></td>
+    <td><%= @account.sortCode %></td>
+    <td><%= @account.accountNumber %></td>
+    <td><%= @account.currency %></td>
+    <td><%= @account.accountCategory %></td>
+    <td><%= link "list", to: account_path(@conn, :index)  %></td>
+  </tr>
+</table>

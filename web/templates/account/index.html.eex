@@ -1,0 +1,24 @@
+<h1>Listing Accounts</h1>
+
+<table class="table">
+  <tr>
+    <th>Bank</th>
+    <th>Label</th>
+    <th>Sort Code</th>
+    <th>Account Number</th>
+    <th>Currency</th>
+    <th>Category</th>
+    <th>Link</th>
+  </tr>
+  <%= for account <- @accounts do %>
+  <tr>
+    <td><b><%= account.bank %></b></td>
+    <td><b><%= account.label %></b></td>
+    <td><%= account.sortCode %></td>
+    <td><%= account.accountNumber %></td>
+    <td><%= account.currency %></td>
+    <td><%= account.accountCategory %></td>
+    <td><%= link "details", to: account_path(@conn, :show, account.label)  %></td>
+  </tr>
+  <% end %>
+</table>

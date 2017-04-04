@@ -1,0 +1,35 @@
+<h1>Create new account</h1>
+<%= form_for @changeset, account_path(@conn, :create), fn f -> %>
+
+<div class="form-group">
+  <%= text_input f, :bank, placeholder: "Bank", class: "form-control" %>
+  <%= error_tag f, :bank %>
+</div>
+
+<div class="form-group">
+  <%= text_input f, :label, placeholder: "Account label", class: "form-control" %>
+  <%= error_tag f, :label %>
+</div>
+
+<div class="form-group">
+  <%= text_input f, :sortCode, placeholder: "Sort code", class: "form-control" %>
+  <%= error_tag f, :sortCode %>
+</div>
+
+<div class="form-group">
+  <%= text_input f, :accountNumber, placeholder: "Account Number", class: "form-control" %>
+  <%= error_tag f, :accountNumber %>
+</div>
+
+<div class="form-group">
+  <%= text_input f, :currency, placeholder: "GBP", class: "form-control" %>
+  <%= error_tag f, :currency %>
+</div>
+
+<div class="form-group">
+  <%= text_input f, :accountCategory, placeholder: "cuurent account", class: "form-control" %>
+  <%= error_tag f, :accountCategory %>
+</div>
+
+<%= submit "Create Account", class: "btn btn-primary" %>
+<% end %>
