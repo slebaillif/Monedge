@@ -1,2 +1,2 @@
-<h1>Tranactions</h1>
+<h1>Transactions</h1>
 From file <%= @filename %>
