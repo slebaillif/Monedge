@@ -24,6 +24,7 @@ defmodule Monedge.Router do
     get "/accounts/:id/uploaded", AccountController, :uploaded
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
     resources "/categories", CategoryController
+    resources "/transactions", TransactionController
   end
 
   # Other scopes may use custom stacks.

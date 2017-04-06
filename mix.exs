@@ -19,7 +19,7 @@ defmodule Monedge.Mixfile do
   def application do
     [mod: {Monedge, []},
      applications: [:simple_bayes, :stemmer,:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex,  :comeonin]]
+                    :phoenix_ecto, :postgrex,  :comeonin,:nimble_csv]]
   end
 
   # Specifies which paths to compile per environment.
@@ -40,7 +40,8 @@ defmodule Monedge.Mixfile do
      {:cowboy, "~> 1.0"},
      {:simple_bayes, "~> 0.11.0"},
      {:stemmer,"~> 1.0"},
-     {:comeonin, "~> 2.0"}]
+     {:comeonin, "~> 2.0"},
+     {:nimble_csv, "~> 0.1.0"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

@@ -1,6 +1,8 @@
 defmodule Monedge.AccountController do
   use Monedge.Web, :controller
   alias Monedge.Account
+  alias NimbleCSV.RFC4180, as: CSV
+  NimbleCSV.define(MyParser, separator: "\t", escape: "\"")
 
   def index(conn, _params) do
     accounts = Repo.all(Monedge.Account)
@@ -36,9 +38,18 @@ defmodule Monedge.AccountController do
   end
 
 def upload_file(conn, %{"account"=>account}) do
-    IO.inspect account
     upload = account["transfile"]
-    render conn, "uploaded.html", filename: upload.filename
+
+    rows = upload.path
+    |> File.stream!
+    |> MyParser.parse_stream
+    # |> Stream.map(fn [date, description, amount, currency] ->
+    #   %{date: date, descrption: description, amount: String.to_float(amount), currency: currency}
+    # end)
+    |> Enum.to_list
+
+    [head | tail] = rows
+    render conn, "uploaded.html", filename: head
 end
 
 def uploaded(conn, %{"filename" => filename}) do

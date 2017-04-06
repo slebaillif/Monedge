@@ -7,7 +7,7 @@ defmodule Monedge.Repo.Migrations.CreateTransaction do
       add :description, :text
       add :amount, :float
       add :currency, :string
-      add :account_id, references(:account, on_delete: :nothing)
+      add :account_id, references(:accounts, on_delete: :nothing)
 
       timestamps()
     end
