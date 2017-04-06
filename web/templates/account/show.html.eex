@@ -8,6 +8,7 @@
     <td><%= @account.accountNumber %></td>
     <td><%= @account.currency %></td>
     <td><%= @account.accountCategory %></td>
-    <td><%= link "list", to: account_path(@conn, :index)  %></td>
+    <td><%= link "list", to: account_path(@conn, :index)  %>
+        <%= link "upload", to: account_path(@conn, :upload, @account.label)  %></td>
   </tr>
 </table>

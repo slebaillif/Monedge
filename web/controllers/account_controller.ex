@@ -26,7 +26,19 @@ defmodule Monedge.AccountController do
       |> redirect(to: account_path(conn, :index, id: account.label))
 
       {:error, changeset} -> render(conn, "new.html", changeset: changeset)
+    end
   end
+
+  def upload(conn, %{"id" => label}) do
+    account = Repo.get_by(Monedge.Account, label: label)
+    changeset = Account.changeset(account)
+    render conn, "upload.html", changeset: changeset, account: account
+  end
+
+def upload_file(conn, %{"account"=>account}) do
+    IO.inspect account
+    render conn, "upload_file.html", account.transfile
 end
+
 
 end
