@@ -37,8 +37,14 @@ defmodule Monedge.AccountController do
 
 def upload_file(conn, %{"account"=>account}) do
     IO.inspect account
-    render conn, "upload_file.html", account.transfile
+    upload = account["transfile"]
+    render conn, "uploaded.html", filename: upload.filename
 end
+
+def uploaded(conn, %{"filename" => filename}) do
+  render(conn, "uploaded.html",  filename: filename)
+end
+
 
 
 end
