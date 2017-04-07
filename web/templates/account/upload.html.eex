@@ -1,5 +1,5 @@
 <h1>Upload transactions for account <%= @account.label%></h1>
-<%= form_for @changeset, account_path(@conn, :upload_file), [multipart: true], fn f -> %>
+<%= form_for @changeset, account_path(@conn, :upload_file, @account.label), [multipart: true], fn f -> %>
 
 <div class="form-group">
   <%= file_input f, :transfile, class: "form-control" %>

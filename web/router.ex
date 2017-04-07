@@ -20,8 +20,8 @@ defmodule Monedge.Router do
 
     get "/", PageController, :index
     get "/accounts/:id/upload", AccountController, :upload
-    put "/accounts/upload_file", AccountController, :upload_file
-    get "/accounts/:id/uploaded", AccountController, :uploaded
+    put "/accounts/:id/upload_file", AccountController, :upload_file
+    get "/accounts/:id/:lines/uploaded", AccountController, :uploaded
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
     resources "/categories", CategoryController
     resources "/transactions", TransactionController

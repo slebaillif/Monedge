@@ -1,7 +1,6 @@
 defmodule Monedge.AccountController do
   use Monedge.Web, :controller
   alias Monedge.Account
-  alias NimbleCSV.RFC4180, as: CSV
   NimbleCSV.define(MyParser, separator: "\t", escape: "\"")
 
   def index(conn, _params) do
@@ -37,23 +36,30 @@ defmodule Monedge.AccountController do
     render conn, "upload.html", changeset: changeset, account: account
   end
 
-def upload_file(conn, %{"account"=>account}) do
-    upload = account["transfile"]
-
-    rows = upload.path
-    |> File.stream!
-    |> MyParser.parse_stream
-    # |> Stream.map(fn [date, description, amount, currency] ->
-    #   %{date: date, descrption: description, amount: String.to_float(amount), currency: currency}
-    # end)
-    |> Enum.to_list
-
-    [head | tail] = rows
-    render conn, "uploaded.html", filename: head
+def extract [date, desc,amount, currency | _] do
+  %{date: date, description: desc, amount: amount, currency: currency}
 end
 
-def uploaded(conn, %{"filename" => filename}) do
-  render(conn, "uploaded.html",  filename: filename)
+def upload_file(conn, %{"account"=>account, "id"=>id}) do
+    upload = account["transfile"]
+    {:ok, file} = File.open(upload.path, [:read])
+
+    f = fn [d, a | tail] -> %{d: d, a: a} end
+
+    lines = IO.stream(file, :line)
+    |> Stream.map(&String.rstrip/1)
+    |> Stream.map(&(String.replace(&1, "\"", "")))
+    |> Stream.map(&(String.split(&1,"\t")))
+    |> Stream.map(&extract/1)
+    |> Enum.to_list
+
+    # todo assoc account id  into transaction rather than url param
+
+    render conn, "uploaded.html", id: id, lines: lines
+end
+
+def uploaded(conn, %{"lines" => lines, "id"=>id}) do
+  render(conn, "uploaded.html",  id: id, lines: lines)
 end
 
 

@@ -1,2 +1,24 @@
-<h1>Transactions</h1>
-From file <%= @filename %>
+  <h1>Transactions</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Currency</th>
+        <th>Account</th>
+        <th>Links</th>
+      </tr>
+    </thead>
+
+  <%= for line <- @lines do %>
+  <tr>
+    <td><%= line[:date] %></td>
+    <td><%= line[:description] %></td>
+    <td><%= line[:amount] %></td>
+    <td><%= line[:currency] %></td>
+    <td><%= @id %></td>
+    <td></td>
+  </tr>
+  <% end %>
+  </table>
