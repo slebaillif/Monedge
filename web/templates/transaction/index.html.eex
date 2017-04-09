@@ -19,7 +19,7 @@
       <td><%= transaction.description %></td>
       <td><%= transaction.amount %></td>
       <td><%= transaction.currency %></td>
-      <td><%= transaction.account_id %></td>
+      <td><%= transaction.account.label %></td>
 
       <td class="text-right">
         <%= link "Show", to: transaction_path(@conn, :show, transaction), class: "btn btn-default btn-xs" %>

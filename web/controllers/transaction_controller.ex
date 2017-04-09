@@ -4,7 +4,7 @@ defmodule Monedge.TransactionController do
   alias Monedge.Transaction
 
   def index(conn, _params) do
-    transactions = Repo.all(Transaction)
+    transactions = Repo.all(Transaction) |> Repo.preload(:account)
     render(conn, "index.html", transactions: transactions)
   end
 

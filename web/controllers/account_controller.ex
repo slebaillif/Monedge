@@ -1,7 +1,9 @@
 defmodule Monedge.AccountController do
+  require Logger
   use Monedge.Web, :controller
+  use Timex
   alias Monedge.Account
-  NimbleCSV.define(MyParser, separator: "\t", escape: "\"")
+  alias Monedge.Transaction
 
   def index(conn, _params) do
     accounts = Repo.all(Monedge.Account)
@@ -36,12 +38,18 @@ defmodule Monedge.AccountController do
     render conn, "upload.html", changeset: changeset, account: account
   end
 
-def extract [date, desc,amount, currency | _] do
-  %{date: date, description: desc, amount: amount, currency: currency}
+def extract([date, desc,amount, currency | _], account) do
+  case Timex.parse(date, "{D}-{0M}-{YYYY}") do
+    {:ok, timex_date} ->{:ok, formatted_date} = Timex.format(timex_date, "{ISOdate}")
+                        %{date: Ecto.Date.cast!(formatted_date), description: desc, amount: String.to_float(amount), currency: currency, account_id: account}
+    {:error, error} -> Logger.info "Error extract: #{inspect(error)}"
+  end
+
 end
 
 def upload_file(conn, %{"account"=>account, "id"=>id}) do
     upload = account["transfile"]
+    real_account = Repo.get_by(Monedge.Account, label: id)
     {:ok, file} = File.open(upload.path, [:read])
 
     f = fn [d, a | tail] -> %{d: d, a: a} end
@@ -50,10 +58,14 @@ def upload_file(conn, %{"account"=>account, "id"=>id}) do
     |> Stream.map(&String.rstrip/1)
     |> Stream.map(&(String.replace(&1, "\"", "")))
     |> Stream.map(&(String.split(&1,"\t")))
-    |> Stream.map(&extract/1)
+    |> Stream.map(&(extract(&1, real_account.id)))
     |> Enum.to_list
 
-    # todo assoc account id  into transaction rather than url param
+    lines
+    |>Enum.map(&(save_transactions(&1)) )
+# [head|_] =lines
+# Logger.info "Var value head: #{inspect(head)}"
+# save_transactions(conn, head)
 
     render conn, "uploaded.html", id: id, lines: lines
 end
@@ -62,6 +74,20 @@ def uploaded(conn, %{"lines" => lines, "id"=>id}) do
   render(conn, "uploaded.html",  id: id, lines: lines)
 end
 
+def save_transactions(transaction_params) do
+  changeset = Transaction.changeset(%Transaction{}, transaction_params)
+  # case
+  Repo.insert(changeset)
+  # do
+    # {:ok, _transaction} ->
+    #   conn
+    #   |> put_flash(:info, "Transaction created successfully.")
+    #   |> redirect(to: transaction_path(conn, :index))
+    # {:error, changeset} ->
+    #   Logger.info "Error: #{inspect(changeset)}"
+      # render(conn, "new.html", changeset: changeset)
+  # end
+end
 
 
 end
