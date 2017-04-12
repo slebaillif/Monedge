@@ -27,6 +27,11 @@
     <%= @transaction.account_id %>
   </li>
 
+  <li>
+    <strong>Category:</strong>
+    <%= @transaction.category_id %>
+  </li>
+
 </ul>
 
 <%= link "Edit", to: transaction_path(@conn, :edit, @transaction) %>

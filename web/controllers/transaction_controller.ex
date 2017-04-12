@@ -2,9 +2,10 @@ defmodule Monedge.TransactionController do
   use Monedge.Web, :controller
 
   alias Monedge.Transaction
+  alias Monedge.Category
 
   def index(conn, _params) do
-    transactions = Repo.all(Transaction) |> Repo.preload(:account)
+    transactions = Repo.all(Transaction) |> Repo.preload(:account)|>Repo.preload(:category)
     render(conn, "index.html", transactions: transactions)
   end
 
@@ -32,8 +33,9 @@ defmodule Monedge.TransactionController do
   end
 
   def edit(conn, %{"id" => id}) do
-    transaction = Repo.get!(Transaction, id)
-    changeset = Transaction.changeset(transaction)
+    transaction = Repo.get!(Transaction, id)|> Repo.preload(:account)|>Repo.preload(:category)
+    categories = Repo.all(Category) |> Enum.map (fn m -> {m.name, m.id} end)
+    changeset = Transaction.changeset(transaction) |> Map.put(:categories, categories)
     render(conn, "edit.html", transaction: transaction, changeset: changeset)
   end
 

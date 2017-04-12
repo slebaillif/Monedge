@@ -4,6 +4,7 @@ defmodule Monedge.AccountController do
   use Timex
   alias Monedge.Account
   alias Monedge.Transaction
+  alias Monedge.Category
 
   def index(conn, _params) do
     accounts = Repo.all(Monedge.Account)
@@ -41,7 +42,7 @@ defmodule Monedge.AccountController do
 def extract([date, desc,amount, currency | _], account) do
   case Timex.parse(date, "{D}-{0M}-{YYYY}") do
     {:ok, timex_date} ->{:ok, formatted_date} = Timex.format(timex_date, "{ISOdate}")
-                        %{date: Ecto.Date.cast!(formatted_date), description: desc, amount: String.to_float(amount), currency: currency, account_id: account}
+                        %{date: Ecto.Date.cast!(formatted_date), description: desc, amount: String.to_float(amount), currency: currency, account_id: account, category_id: 5}
     {:error, error} -> Logger.info "Error extract: #{inspect(error)}"
   end
 

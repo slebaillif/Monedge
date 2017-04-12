@@ -7,7 +7,7 @@ defmodule Monedge.Transaction do
     field :amount, :float
     field :currency, :string
     belongs_to :account, Monedge.Account
-    has_one :category, Monedge.Category
+    belongs_to :category, Monedge.Category
 
     timestamps()
   end
@@ -17,8 +17,9 @@ defmodule Monedge.Transaction do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :description, :amount, :currency, :account_id, :category])
+    |> cast(params, [:date, :description, :amount, :currency, :account_id, :category_id])
     |> cast_assoc(:account)
+    |> cast_assoc(:category)
     |> validate_required([:date, :description, :amount, :currency])
   end
 end
