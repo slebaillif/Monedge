@@ -8,6 +8,7 @@ defmodule Monedge.Transaction do
     field :currency, :string
     belongs_to :account, Monedge.Account
     belongs_to :category, Monedge.Category
+    belongs_to :suggestion, Monedge.Category
 
     timestamps()
   end
