@@ -72,7 +72,7 @@ def train(conn, _) do
   fil = Enum.filter(transactions, fn t -> t.category.name != "Unclassified" end)
   bays = Enum.reduce(fil, SimpleBayes.init() , fn(x, acc) -> SimpleBayes.train(acc, String.to_atom(x.category.name), x.description)  end)
   upd_transactions = apply_model(bays, transactions)
-  transactions = Monedge.Repo.all(Monedge.Transaction) |> Monedge.Repo.preload(:account)|>Monedge.Repo.preload(:category)
+  transactions = Monedge.Repo.all(Monedge.Transaction) |> Monedge.Repo.preload(:account)|>Monedge.Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
   render(conn, "index.html", transactions: transactions)
 end
 
@@ -88,7 +88,7 @@ end
        select_category = Repo.get_by(Category, name: Atom.to_string(select_category_name))
       Logger.info "cat: #{inspect(select_category)}"
       transaction = Repo.get!(Transaction, t.id)
-      changeset = Transaction.changeset(transaction, %{category_id: select_category.id})
+      changeset = Transaction.changeset(transaction, %{suggestion_id: select_category.id})
       Repo.update(changeset)
     end)
   end
