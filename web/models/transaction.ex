@@ -18,9 +18,10 @@ defmodule Monedge.Transaction do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:date, :description, :amount, :currency, :account_id, :category_id])
+    |> cast(params, [:date, :description, :amount, :currency, :account_id, :category_id, :suggestion_id])
     |> cast_assoc(:account)
     |> cast_assoc(:category)
+    |> cast_assoc(:suggestion)
     |> validate_required([:date, :description, :amount, :currency])
   end
 end

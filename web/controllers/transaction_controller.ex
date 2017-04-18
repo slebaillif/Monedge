@@ -7,7 +7,7 @@ defmodule Monedge.TransactionController do
 
 
   def index(conn, _params) do
-    transactions = Repo.all(Transaction) |> Repo.preload(:account)|>Repo.preload(:category)
+    transactions = Repo.all(Transaction) |> Repo.preload(:account)|>Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
     render(conn, "index.html", transactions: transactions)
   end
 
@@ -35,7 +35,7 @@ defmodule Monedge.TransactionController do
   end
 
   def edit(conn, %{"id" => id}) do
-    transaction = Repo.get!(Transaction, id)|> Repo.preload(:account)|>Repo.preload(:category)
+    transaction = Repo.get!(Transaction, id)|> Repo.preload(:account)|>Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
     categories = Repo.all(Category) |> Enum.map (fn m -> {m.name, m.id} end)
     changeset = Transaction.changeset(transaction) |> Map.put(:categories, categories)
     render(conn, "edit.html", transaction: transaction, changeset: changeset)
@@ -68,7 +68,7 @@ defmodule Monedge.TransactionController do
   end
 
 def train(conn, _) do
-  transactions = Monedge.Repo.all(Monedge.Transaction) |> Monedge.Repo.preload(:account)|>Monedge.Repo.preload(:category)
+  transactions = Monedge.Repo.all(Monedge.Transaction) |> Monedge.Repo.preload(:account)|>Monedge.Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
   fil = Enum.filter(transactions, fn t -> t.category.name != "Unclassified" end)
   bays = Enum.reduce(fil, SimpleBayes.init() , fn(x, acc) -> SimpleBayes.train(acc, String.to_atom(x.category.name), x.description)  end)
   upd_transactions = apply_model(bays, transactions)
