@@ -11,6 +11,15 @@ defmodule Monedge.TransactionController do
     render(conn, "index.html", transactions: transactions)
   end
 
+  def unclassified(conn, _params) do
+    transactions = Repo.all( from t in Monedge.Transaction,  where: t.category_id ==6,  select: t  )
+    |> Repo.preload(:account)
+    |>Repo.preload(:category)
+    |>Monedge.Repo.preload(:suggestion)
+
+    render(conn, "index.html", transactions: transactions)
+  end
+
   def new(conn, _params) do
     changeset = Transaction.changeset(%Transaction{})
     render(conn, "new.html", changeset: changeset)
@@ -71,21 +80,51 @@ def train(conn, _) do
   transactions = Monedge.Repo.all(Monedge.Transaction) |> Monedge.Repo.preload(:account)|>Monedge.Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
   fil = Enum.filter(transactions, fn t -> t.category.name != "Unclassified" end)
   bays = Enum.reduce(fil, SimpleBayes.init() , fn(x, acc) -> SimpleBayes.train(acc, String.to_atom(x.category.name), x.description)  end)
-  upd_transactions = apply_model(bays, transactions)
-  transactions = Monedge.Repo.all(Monedge.Transaction) |> Monedge.Repo.preload(:account)|>Monedge.Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
-  render(conn, "index.html", transactions: transactions)
+  apply_model(bays, transactions)
+  redirect(conn, to: transaction_path(conn, :unclassified))
 end
 
+def guess(conn, %{"id" => id}) do
+  transaction = Repo.get!(Transaction, id)
+  changeset = Transaction.changeset(transaction, %{category_id: transaction.suggestion_id})
+  Repo.update(changeset)
+  train(conn, nil)
+end
 
+def sanitize_description(desc) do
+  String.replace(desc, ~r/[0-9]/, "")
+  |> String.replace( ~r/\./, "")
+  |> String.replace( ~r/\./, "")
+  |> String.replace( ~r/GBP/, "")
+  |> String.replace( ~r/GB/, "")
+  |> String.replace( ~r/PURCHASE/, "")
+  |> String.replace( ~r/OUTGOING FASTER PAYMENT/, "")
+  |> String.replace( ~r/STANDING ORDER/, "")
+  |> String.replace( ~r/INCOMING CHAPS/, "")
+  |> String.replace( ~r/TRANSFER CHAPS/, "")
+  |> String.replace( ~r/DIRECT DEBIT/, "")
+  |> String.replace( ~r/PAYPAL/, "")
+end
 
   def apply_model(bays, transactions) do
     Logger.info "apply model"
-    trans = Enum.filter(transactions, fn t -> t.category.name == "Unclassified" end)
-    Logger.info "trans: #{inspect(trans)}"
+    # trans = Enum.filter(transactions, fn t -> t.category.name == "Unclassified" end)
+    # Logger.info "transactions: #{inspect(transactions)}"
 
-    classified = Enum.map(trans, fn t ->
-      select_category_name = SimpleBayes.classify_one(bays, t.description)
-       select_category = Repo.get_by(Category, name: Atom.to_string(select_category_name))
+    classified = Enum.map(transactions, fn t ->
+      first_result= SimpleBayes.classify(bays, sanitize_description(t.description))
+      Logger.info "first_result: #{inspect(first_result)}"
+      select_category_name = first_result
+                            |> Keyword.keys
+                            |> List.first
+      val = first_result
+            |>Keyword.get(select_category_name)
+
+      select_category = case val do
+        0.0 ->  Repo.get_by(Category, name: "Unclassified")
+          _ ->  Repo.get_by(Category, name: Atom.to_string(select_category_name))
+      end
+
       Logger.info "cat: #{inspect(select_category)}"
       transaction = Repo.get!(Transaction, t.id)
       changeset = Transaction.changeset(transaction, %{suggestion_id: select_category.id})
