@@ -1,0 +1,40 @@
+<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+<style>
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #eee;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-size: 11px;
+}
+
+.bar {
+  fill: steelblue;
+}
+</style>
+
+<div id="pieDiv"></div>
+<div id="chart"></div>
+<script>
+// var p = require("web/static/js/pie");
+// var p = new PieSeb();
+var data = [
+  <%=  for transaction <- @transactions do %>
+  {"letter":"<%= Enum.at(transaction,0) %>",
+   "presses":<%= abs(Enum.at(transaction,1)) %>},
+  <% end %>
+
+];
+
+console.log(data);
+ var p = require("web/static/js/app");
+p.App2.barChart(data);
+
+</script>

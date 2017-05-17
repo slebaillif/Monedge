@@ -11,8 +11,36 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
-// import $ from "d3"
+import "phoenix_html";
+import MainView from './main';
+import * as bar from './basic-bar-chart';
+// import PieSeb from './pie';
+import d3 from "d3"
+
+function handlDOMContentLoaded(){
+  const view = new MainView();
+  view.mount();
+  window.currentView = view;
+}
+
+function handlDOMContentUnload(){
+  window.currentView.unmount();
+}
+
+window.addEventListener('DOMContentLoaded', handlDOMContentLoaded, false);
+window.addEventListener('unload', handlDOMContentUnload, false);
+
+// export var App = {
+//   run: function(data){
+//     var p = new PieSeb();
+//     p.drawPie(data);
+//   }
+// }
+
+export var App2 = {
+  barChart: function(data)  {bar.renderChart(data);}
+}
+
 
 // Import local files
 //

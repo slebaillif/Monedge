@@ -18,7 +18,7 @@ def d3test(conn, _params) do
 
   Logger.info ("sorted: #{inspect(sorted)}")
 
-  render(conn, "d3test.html",transactions: sorted)
+  render(conn, "d3testbar.html",transactions: sorted)
 end
 
   def index(conn, _params) do
