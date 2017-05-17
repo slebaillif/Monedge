@@ -16,34 +16,34 @@ export function renderChart(data) {
     bottom: 30
   };
 
-  svg.attr('width', window.innerWidth);
-  svg.attr('height', window.innerHeight);
+  svg.attr('width', window.innerWidth-200);
+  svg.attr('height', window.innerHeight-100);
 
-  var width = window.innerWidth - margin.left - margin.right;
-  var height = window.innerHeight - margin.top - margin.bottom;
+  var width = window.innerWidth - margin.left - margin.right-200;
+  var height = window.innerHeight - margin.top - margin.bottom-100;
 
   var   chart = svg.append('g')
     .attr('width', width)
     .attr('height', height)
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
-  chart.attr('width', window.innerWidth)
-    .attr('height', window.innerHeight);
+  chart.attr('width', window.innerWidth-200)
+    .attr('height', window.innerHeight-100);
 
   const x = d3.scaleBand()
     .domain(data.map(d => d.letter))
-    .rangeRound([50, window.innerWidth - 50])
+    .rangeRound([50, window.innerWidth - 250])
     .padding(0.1);
 
   const y = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.presses)])
-    .range([window.innerHeight - 50, 0]);
+    .range([window.innerHeight - 150, 0]);
 
   const xAxis = d3.axisBottom().scale(x);
   const yAxis = d3.axisLeft().scale(y);
 
   chart.append('g')
     .attr('class', 'axis')
-    .attr('transform', `translate(0, ${window.innerHeight - 50})`)
+    .attr('transform', `translate(0, ${window.innerHeight - 150})`)
     .call(xAxis);
 
   chart.append('g')
@@ -57,7 +57,7 @@ export function renderChart(data) {
      .append('rect')
      .attr('class', 'bar')
      .attr('x', d => x(d.letter))
-     .attr('y', window.innerHeight - 50)
+     .attr('y', window.innerHeight - 150)
      .attr('width', x.bandwidth())
      .attr('height', 0)
        .transition()
@@ -65,5 +65,5 @@ export function renderChart(data) {
        .duration(800)
        .attr('y', d => y(d.presses))
        .attr('height', d =>
-           (window.innerHeight - 50) - y(d.presses));
+           (window.innerHeight - 150) - y(d.presses));
 }

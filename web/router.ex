@@ -24,7 +24,7 @@ defmodule Monedge.Router do
     get "/accounts/:id/:lines/uploaded", AccountController, :uploaded
     get "/transactions/train", TransactionController, :train
     get "/transactions/unclassified", TransactionController, :unclassified
-    get "/transactions/d3test", TransactionController, :d3test
+    get "/visu/d3test",VisuController, :d3test
     get "/transactions/:id/guess", TransactionController, :guess
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
     resources "/categories", CategoryController

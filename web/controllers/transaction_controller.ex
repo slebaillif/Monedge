@@ -5,21 +5,7 @@ defmodule Monedge.TransactionController do
   alias Monedge.Transaction
   alias Monedge.Category
 
-def d3test(conn, _params) do
-  transactions = Repo.all( from t in Monedge.Transaction,
-  join: c in assoc(t, :category),
-  # where: t.category_id in [1,2,3,4,5,6,7,8,9],
-  group_by: c.name,
-  select: [c.name, sum(t.amount)]  )
 
-  sorted = Enum.filter(transactions, &(Enum.at(&1,1) <0))
-          |>Enum.sort(&(Enum.at(&1,1) <= Enum.at(&2,1)))
-          |>Enum.take(4)
-
-  Logger.info ("sorted: #{inspect(sorted)}")
-
-  render(conn, "d3testbar.html",transactions: sorted)
-end
 
   def index(conn, _params) do
     transactions = Repo.all(Transaction) |> Repo.preload(:account)|>Repo.preload(:category)|>Monedge.Repo.preload(:suggestion)
