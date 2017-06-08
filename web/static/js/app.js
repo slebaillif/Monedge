@@ -38,7 +38,8 @@ window.addEventListener('unload', handlDOMContentUnload, false);
 // }
 
 export var App2 = {
-  barChart: function(data)  {bar.renderChart(data);}
+  barChart: function(data)  {bar.renderChart(data);},
+  stackedBarChart: function(data)  {bar.renderStackedChart(data);}
 }
 
 
