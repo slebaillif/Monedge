@@ -11,7 +11,7 @@
         <a href="http://localhost:4000/visu/d3test">Spent by category</a>
       </li>
       <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
+        <a href="http://localhost:4000/visu/bar">Spent by category and date range</a>
       </li>
       <li>
         <a href="https://github.com/phoenixframework/phoenix">Source</a>

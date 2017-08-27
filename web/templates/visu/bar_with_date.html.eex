@@ -1,4 +1,4 @@
-<%= form_for @conn, visu_path(@conn, :view), [as: :date_range],  fn f -> %>
+<%= form_for @conn, visu_path(@conn, :viewBarByCategoryAndDateRange), [as: :date_range],  fn f -> %>
 
 
 <div class="form-group">
