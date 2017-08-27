@@ -1,2 +1,0 @@
-<h1>Tranactions</h1>
-From file <%= @transfile %>

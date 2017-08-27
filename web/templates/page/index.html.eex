@@ -5,10 +5,10 @@
 
 <div class="row marketing">
   <div class="col-lg-6">
-    <h4>Resources</h4>
+    <h4>Graphs</h4>
     <ul>
       <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
+        <a href="http://localhost:4000/visu/d3test">Spent by category</a>
       </li>
       <li>
         <a href="https://hexdocs.pm/phoenix">Docs</a>

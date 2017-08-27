@@ -15,7 +15,9 @@
   <body>
     <div class="container">
       <header class="header">
+          <a href="/">
           <span class="logo"></span>
+          </a>
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
             <li><%= link "Categories", to: category_path(@conn, :index) %></li>
