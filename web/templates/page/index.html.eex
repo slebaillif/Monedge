@@ -8,10 +8,13 @@
     <h4>Graphs</h4>
     <ul>
       <li>
-        <a href="http://localhost:4000/visu/d3test">Spent by category</a>
+        <a href="http://localhost:4000/visu/d3test">Spent by category Bar chart</a>
+      </li>
+        <li>
+        <a href="http://localhost:4000/visu/pie">Spent by category Pie Chart</a>
       </li>
       <li>
-        <a href="http://localhost:4000/visu/bar">Spent by category and date range</a>
+        <a href="http://localhost:4000/visu/bar">Spent by category and date range Bar chart</a>
       </li>
       <li>
         <a href="https://github.com/phoenixframework/phoenix">Source</a>

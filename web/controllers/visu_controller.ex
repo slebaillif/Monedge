@@ -18,6 +18,19 @@ defmodule Monedge.VisuController do
     render(conn, "d3testbar.html",transactions: sorted)
   end
 
+  def pie(conn, _params) do
+    transactions = Repo.all( from t in Monedge.Transaction,
+    join: c in assoc(t, :category),
+    group_by: c.name,
+    select: [c.name, sum(t.amount)]  )
+
+    sorted = filterNonOutFlows(transactions)
+
+    Logger.info ("sorted: #{inspect(sorted)}")
+
+    render(conn, "pie.html",transactions: sorted)
+  end
+
   def barWithDate(conn, params) do
     date_range = %{range_start: ~D[2017-01-01], range_end: ~D[2017-03-31]}
     render(conn, "bar_with_date.html",date_range: date_range)
