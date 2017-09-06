@@ -64,8 +64,7 @@ export function renderChart(data) {
 
 export function renderStackedChart(data) {
   var svg = d3.select('div#chart').append('svg');
-  data[0].keys();
-
+  
   var margin = {
     left: 30,
     top: 30,
@@ -87,13 +86,19 @@ export function renderStackedChart(data) {
   .attr('height', window.innerHeight-100);
 
   const x = d3.scaleBand()
-  .domain(data.map(d => d.category))
+  .domain(['clothing', 'energy'])
   .rangeRound([50, window.innerWidth - 250])
   .padding(0.1);
 
   const y = d3.scaleLinear()
-  .domain([0, d3.max(data, d => d.amount)])
+  .domain([0, d3.max(d => d.total)])
   .range([window.innerHeight - 150, 0]);
+
+  const z = d3.scaleOrdinal()
+  .domain(d => d.month)
+  .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+  var stack = d3.stack();
 
   const xAxis = d3.axisBottom().scale(x);
   const yAxis = d3.axisLeft().scale(y);
@@ -108,19 +113,18 @@ export function renderStackedChart(data) {
   .attr('transform', 'translate(50, 0)')
   .call(yAxis);
 
+  stack.keys([1,2]);
+
+  console.log(data);
+
   chart.selectAll('rect')
-  .data(data)
+  .data(stack(data))
+  .attr("fill", function(d) { return z(d.month); })
   .enter()
   .append('rect')
   .attr('class', 'bar')
   .attr('x', d => x(d.category))
-  .attr('y', window.innerHeight - 150)
   .attr('width', x.bandwidth())
-  .attr('height', 0)
-  .transition()
-  .delay((d, i) => i * 20)
-  .duration(800)
   .attr('y', d => y(d.amount))
-  .attr('height', d =>
-  (window.innerHeight - 150) - y(d.amount));
+  .attr('height', d =>  y(d.total) - y(d.amount));
 }

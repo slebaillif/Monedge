@@ -1,0 +1,21 @@
+<%= form_for @conn, visu_path(@conn, :viewStackedBarByCategoryAndDateRange), [as: :date_range],  fn f -> %>
+
+
+<div class="form-group">
+  <%= label f, :range_start, class: "control-label" %>
+  <%= date_select f, :range_start, class: "form-control" %>
+  <%= error_tag f, :range_start %>
+</div>
+
+<div class="form-group">
+  <%= label f, :range_end, class: "control-label" %>
+  <%= date_select f, :range_end, class: "form-control" %>
+  <%= error_tag f, :range_end %>
+</div>
+
+<div class="form-group">
+  <%= submit "Select", class: "btn btn-primary" %>
+</div>
+<% end %>
+
+<div id="chart"></div>

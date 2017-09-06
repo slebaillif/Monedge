@@ -20,19 +20,19 @@ html, body {
 }
 </style>
 
-<div id="pieDiv"></div>
 <div id="chart"></div>
 <script>
-// var p = require("web/static/js/pie");
-// var p = new PieSeb();
+
 var data = [
   <%=  for transaction <- @transactions do %>
-  {"category":"<%= Enum.at(transaction,0) %>",
-  "month":"<%= Enum.at(transaction,1) %>",
-  "amount":<%= abs(Enum.at(transaction,2)) %>},
+  {"clothing":<%= transaction[:clothing] %>,
+  "energy":<%= transaction[:energy] %>,
+  "month":<%= transaction[:month] %>,
+  "total":1000},
   <% end %>
 
 ];
+
 
 console.log(data);
 var p = require("web/static/js/app");

@@ -28,6 +28,8 @@ defmodule Monedge.Router do
     get "/visu/pie",VisuController, :pie
     get "/visu/bar",VisuController, :barWithDate
     post "/visu/bar",VisuController, :viewBarByCategoryAndDateRange
+    get "/visu/sbar",VisuController, :sbarWithDate
+    post "/visu/sbar",VisuController, :viewStackedBarByCategoryAndDateRange
     get "/transactions/:id/guess", TransactionController, :guess
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
     resources "/categories", CategoryController
