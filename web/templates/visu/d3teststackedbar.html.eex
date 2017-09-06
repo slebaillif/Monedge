@@ -24,13 +24,8 @@ html, body {
 <script>
 
 var data = [
-  <%=  for transaction <- @transactions do %>
-  {"clothing":<%= transaction[:clothing] %>,
-  "energy":<%= transaction[:energy] %>,
-  "month":<%= transaction[:month] %>,
-  "total":1000},
-  <% end %>
-
+  {"state":'AL',  "energy":100,  "clothing":500,  "total":600},
+  {"state":'BO',  "energy":500,  "clothing":300,  "total":800},
 ];
 
 
