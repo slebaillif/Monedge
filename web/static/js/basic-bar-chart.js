@@ -65,8 +65,8 @@ export function renderChart(data) {
 export function renderStackedChart(data) {
   var svg = d3.select('div#chart').append('svg');
 
-  svg.attr('width', window.innerWidth);
-  svg.attr('height', window.innerHeight);
+  svg.attr('width', 400);
+  svg.attr('height', 400);
   
   var margin = {top: 20, right: 20, bottom: 30, left: 40};
   var width = +svg.attr("width") - margin.left - margin.right;
