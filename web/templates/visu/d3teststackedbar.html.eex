@@ -23,11 +23,18 @@ html, body {
 <div id="chart"></div>
 <script>
 
-var data = [
-  {"state":'AL',  "energy":100,  "clothing":500,  "total":600},
-  {"state":'BO',  "energy":500,  "clothing":300,  "total":800},
-];
 
+var data = [
+  <%=  for transaction <- @transactions do %>
+  {   <%=       for k <- Map.keys(transaction) do %>    "<%= k %>":"<%= transaction[k] %>",  <% end %>  },
+  <% end %>];
+
+
+var keys =[
+<%= for k <- @the_keys  do %>
+  "<%= k %>",
+<% end %>
+];
 
 console.log(data);
 var p = require("web/static/js/app");

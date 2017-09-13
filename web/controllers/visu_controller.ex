@@ -60,11 +60,11 @@ defmodule Monedge.VisuController do
 
     sorted = data
                 |> Map.values 
-                |> Enum.into([], fn (a) -> Enum.map(a,fn(b) -> %{Enum.at(b,0) => Enum.at(b,3)} end)end)
+                |> Enum.into([], fn (a) -> Enum.map(a,fn(b) -> %{Enum.at(b,0) => abs(Enum.at(b,3))} end)end)
                 |> Enum.map(fn(a)-> Enum.reduce(a,fn (x, acc) -> Map.merge(x, acc, fn(_key, map1, map2) -> for {k, v1} <- map1, into: %{}, do: {k, v1 + map2[k]} end ) end) end)
     
     totals = sorted 
-              |> Enum.map(fn(a) -> Enum.reduce(a,0, fn({_k,v},acc) -> acc+ v end)end)
+              |> Enum.map(fn(a) -> Enum.reduce(a,0, fn({_k,v},acc) -> acc+ abs(v) end)end)
 
     withTotal = Enum.zip(sorted, totals) 
               |> Enum.map(fn(a) -> Map.merge(elem(a,0), %{"total" => elem(a,1)}) end)
@@ -72,9 +72,11 @@ defmodule Monedge.VisuController do
     result = Enum.zip(withTotal, Map.keys(data))
               |> Enum.map(fn(a) -> Map.merge(elem(a,0), %{"month" => elem(a,1)}) end)
 
-    Logger.info ("result: #{inspect(result)}")
+     theKeys = result   |> Enum.into([], fn(x) -> Map.keys(x) end) |> List.flatten |> Enum.uniq |> List.delete("total")
 
-    render(conn, "d3teststackedbar.html",transactions: sorted, range_start: range_start, range_end: range_end)
+    Logger.info ("theKeys: #{inspect(theKeys)}")
+
+    render(conn, "d3teststackedbar.html",transactions: result, range_start: range_start, range_end: range_end, the_keys: theKeys)
   end
 
   def groupByCategory(range_start, range_end) do
@@ -98,8 +100,8 @@ defmodule Monedge.VisuController do
       select: [c.name, fragment("date_part('month', ?)", t.date),fragment("date_part('year', ?)", t.date), sum(t.amount)]  )
 
     sorted = Enum.filter(transactions, &(Enum.at(&1,3) <0))
-    |> Enum.filter(&(Enum.at(&1,0)  != "Transfer"))
-    |> Enum.filter(&(Enum.at(&1,0)  != "Credit card"))
+              |> Enum.filter(&(Enum.at(&1,0)  != "Transfer"))
+              |> Enum.filter(&(Enum.at(&1,0)  != "Credit card"))
     
     categories = MapSet.new(sorted, fn(t) -> Enum.at(t,0) end)
     months = MapSet.new(sorted, fn(t) -> "#{Enum.at(t,2)}-#{Enum.at(t,1)}" end)

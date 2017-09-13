@@ -75,17 +75,13 @@ export function renderStackedChart(data) {
 
 var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
 var y = d3.scaleLinear().rangeRound([height, 0]);
-var z = d3.scaleOrdinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+var z = d3.scaleOrdinal(d3.schemeCategory20);
 
-
-var keys = ["energy", "clothing"];
 
 data.sort(function(a, b) { return b.total - a.total; });
-x.domain(data.map(function(d) { return d.state; }));
+x.domain(data.map(function(d) { return d.month; }));
 y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
 z.domain(keys);
-
-var bb = d3.stack().keys(keys)(data);
 
 g.append("g")
   .selectAll("g")
@@ -95,7 +91,7 @@ g.append("g")
   .selectAll("rect")
   .data(function(d) { return d; })
   .enter().append("rect")
-    .attr("x", function(d) { return x(d.data.state); })
+    .attr("x", function(d) { return x(d.data.month); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { console.log("height "+d[0] +" - " + d[1]); return y(d[0]) - y(d[1]); })
     .attr("width", x.bandwidth());
