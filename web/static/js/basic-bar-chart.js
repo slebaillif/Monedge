@@ -65,7 +65,7 @@ export function renderChart(data) {
 export function renderStackedChart(data) {
   var svg = d3.select('div#chart').append('svg');
 
-  svg.attr('width', 400);
+  svg.attr('width', 600);
   svg.attr('height', 400);
   
   var margin = {top: 20, right: 20, bottom: 30, left: 40};
@@ -73,7 +73,7 @@ export function renderStackedChart(data) {
   var height = +svg.attr("height") - margin.top - margin.bottom;
   var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
+var x = d3.scaleBand().rangeRound([0, width -150]).paddingInner(0.05).align(0.1);
 var y = d3.scaleLinear().rangeRound([height, 0]);
 var z = d3.scaleOrdinal(d3.schemeCategory20);
 
@@ -111,7 +111,7 @@ g.append("g")
     .attr("fill", "#000")
     .attr("font-weight", "bold")
     .attr("text-anchor", "start")
-    .text("Population");
+    .text("Spending (£)");
 
 var legend = g.append("g")
     .attr("font-family", "sans-serif")
@@ -123,7 +123,7 @@ var legend = g.append("g")
     .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
 legend.append("rect")
-    .attr("x", width - 19)
+    .attr("x", width )
     .attr("width", 19)
     .attr("height", 19)
     .attr("fill", z);
