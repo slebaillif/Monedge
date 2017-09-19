@@ -18,6 +18,17 @@ html, body {
 .bar {
   fill: steelblue;
 }
+
+.toolTip {
+  position: absolute;
+  display: none;
+  min-width: 40px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  border: 1px solid #6F257F;
+  padding: 5px;
+  text-align: center;
+}
 </style>
 
 <div id="chart"></div>
@@ -26,7 +37,7 @@ html, body {
 
 var data = [
   <%=  for transaction <- @transactions do %>
-  {   <%=       for k <- Map.keys(transaction) do %>    "<%= k %>":"<%= transaction[k] %>",  <% end %>  },
+  {   <%=       for k <- Map.keys(transaction) do %>    "<%= k %>":"<%= if is_float(transaction[k]) do Float.floor(transaction[k]) else transaction[k] end %>",  <% end %>  },
   <% end %>];
 
 

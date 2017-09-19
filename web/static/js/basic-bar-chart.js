@@ -68,24 +68,22 @@ export function renderStackedChart(data) {
   svg.attr('width', 600);
   svg.attr('height', 400);
 
+
   var margin = {
     top: 20,
     right: 20,
     bottom: 30,
     left: 40
   };
-  var width = +svg.attr("width") - margin.left - margin.right;
-  var height = +svg.attr("height") - margin.top - margin.bottom;
+  var width = svg.attr("width") - margin.left - margin.right;
+  var height = svg.attr("height") - margin.top - margin.bottom;
+  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
   var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   var x = d3.scaleBand().rangeRound([0, width - 150]).paddingInner(0.05).align(0.1);
   var y = d3.scaleLinear().rangeRound([height, 0]);
   var z = d3.scaleOrdinal(d3.schemeCategory20);
 
-
-  data.sort(function (a, b) {
-    return b.total - a.total;
-  });
   x.domain(data.map(function (d) {
     return d.month;
   }));
@@ -116,7 +114,16 @@ export function renderStackedChart(data) {
       console.log("height " + d[0] + " - " + d[1]);
       return y(d[0]) - y(d[1]);
     })
-    .attr("width", x.bandwidth());
+    .attr("width", x.bandwidth())
+    .on("mouseout", function() { tooltip.style("display", "none"); })
+    .on("mousemove", function (d) {
+      var thisName = d3.select(this.parentNode).datum().key;
+      tooltip
+      .style("left",d3.event.pageX - 50 + "px")
+      .style("top", d3.event.pageY - 70 + "px")
+      .style("display", "inline-block")
+      .html(thisName+ "<br>" + "£ " +(d[1] - d[0]));
+    });
 
   g.append("g")
     .attr("class", "axis")
@@ -159,6 +166,5 @@ export function renderStackedChart(data) {
     .text(function (d) {
       return d;
     });
-
 
 }
