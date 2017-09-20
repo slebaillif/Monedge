@@ -32,6 +32,7 @@ defmodule Monedge.Router do
     post "/visu/sbar",VisuController, :viewStackedBarByCategoryAndDateRange
     get "/transactions/:id/guess", TransactionController, :guess
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
+    resources "/users", UserController, only: [:index, :show, :create, :new]
     resources "/categories", CategoryController
     resources "/transactions", TransactionController
   end

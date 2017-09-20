@@ -1,0 +1,8 @@
+<h1>Showing User</h1>
+
+<table class="table">
+  <tr>
+    <td><%= @user.firstName %></td>
+    <td><%= @user.lastName %></td>
+  </tr>
+</table>

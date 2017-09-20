@@ -20,6 +20,7 @@
           </a>
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
+           <li><%= link "Users", to: user_path(@conn, :index) %></li>
             <li><%= link "Categories", to: category_path(@conn, :index) %></li>
             <li><%= link "Accounts", to: account_path(@conn, :index) %></li>
             <li><%= link "Transactions", to: transaction_path(@conn, :index) %></li>
