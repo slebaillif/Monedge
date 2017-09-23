@@ -7,22 +7,26 @@ defmodule Monedge.AccountController do
   alias Monedge.Category
 
   def index(conn, _params) do
-    accounts = Repo.all(Monedge.Account)
+    accounts = Repo.all(Monedge.Account)|>Monedge.Repo.preload(:user)
     render conn, "index.html", accounts: accounts
   end
 
   def show(conn, %{"id" => label}) do
-      account = Repo.get_by(Monedge.Account, label: label)
+      account = Repo.get_by(Monedge.Account, label: label)|>Monedge.Repo.preload(:user)
       render conn, "show.html", account: account
   end
 
   def new(conn, _params) do
-    changeset = Account.changeset(%Account{})
+    users = Repo.all(Monedge.User) |> Enum.map (fn m -> {m.firstName, m.id} end)
+    users = users ++ [ {"none", nil}]
+    Logger.info "users : #{inspect(users)}"
+    changeset = Account.changeset(%Account{})|> Map.put(:users, users)
     render conn, "new.html", changeset: changeset
   end
 
   def create(conn, %{"account" => user_params}) do
     changeset = Account.changeset(%Account{}, user_params)
+    Logger.info "account changeset : #{inspect(changeset)}"
     case Repo.insert(changeset) do
 
       {:ok, account} -> conn

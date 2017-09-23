@@ -8,11 +8,15 @@ defmodule Monedge.Account do
   field :sortCode, :string
   field :label, :string
   field :accountCategory, :string
+  belongs_to :user, Monedge.User
+  belongs_to :joint_user, Monedge.User
   timestamps()
 end
 
-def changeset(model, params \\:empty) do
-  model
-  |> cast(params , ~w[bank sortCode label accountNumber currency accountCategory], [])
-end
+def changeset(struct, params  \\ %{}) do
+  struct
+  |> cast(params, [:bank, :sortCode, :label ,:accountNumber ,:currency ,:accountCategory, :user_id])
+  |> cast_assoc(:user)
+  |> validate_required([:bank, :sortCode, :accountNumber, :currency, :user_id])
+ end
 end

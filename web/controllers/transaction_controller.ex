@@ -4,6 +4,7 @@ defmodule Monedge.TransactionController do
 
   alias Monedge.Transaction
   alias Monedge.Category
+  alias Monedge.User
 
 
 
@@ -22,7 +23,7 @@ defmodule Monedge.TransactionController do
   end
 
   def new(conn, _params) do
-    changeset = Transaction.changeset(%Transaction{})
+    changeset = Transaction.changeset(%Transaction{}) 
     render(conn, "new.html", changeset: changeset)
   end
 

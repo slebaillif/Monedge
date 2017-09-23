@@ -6,6 +6,8 @@
     <th>Label</th>
     <th>Sort Code</th>
     <th>Account Number</th>
+    <th>Holder</th>
+    <th>Joint Holder</th>
     <th>Currency</th>
     <th>Category</th>
     <th>Link</th>
@@ -16,6 +18,8 @@
     <td><b><%= account.label %></b></td>
     <td><%= account.sortCode %></td>
     <td><%= account.accountNumber %></td>
+    <td><%= if account.user_id != nil do %><%= account.user.firstName %> <%= account.user.lastName %><% else %> None <% end %></td>
+    <td><%= if account.joint_user_id != nil do %><%= account.joint_user.firstName %> <%= account.joint_user.lastName %><% else %> None <% end %></td>
     <td><%= account.currency %></td>
     <td><%= account.accountCategory %></td>
     <td><%= link "details", to: account_path(@conn, :show, account.label)  %></td>
