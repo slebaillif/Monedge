@@ -1,5 +1,7 @@
 <h2>Listing transactions</h2>
 
+<%= link "New transaction", to: transaction_path(@conn, :new) %>
+
 <table class="table">
   <thead>
     <tr>
@@ -34,4 +36,4 @@
   </tbody>
 </table>
 
-<%= link "New transaction", to: transaction_path(@conn, :new) %>
+

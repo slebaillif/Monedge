@@ -7,12 +7,12 @@ defmodule Monedge.AccountController do
   alias Monedge.Category
 
   def index(conn, _params) do
-    accounts = Repo.all(Monedge.Account)|>Monedge.Repo.preload(:user)
+    accounts = Repo.all(Monedge.Account)|>Monedge.Repo.preload(:user)|>Monedge.Repo.preload(:joint_user)
     render conn, "index.html", accounts: accounts
   end
 
   def show(conn, %{"id" => label}) do
-      account = Repo.get_by(Monedge.Account, label: label)|>Monedge.Repo.preload(:user)
+      account = Repo.get_by(Monedge.Account, label: label)|>Monedge.Repo.preload(:user)|>Monedge.Repo.preload(:joint_user)
       render conn, "show.html", account: account
   end
 

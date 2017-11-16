@@ -1,5 +1,7 @@
 <h2>Listing categories</h2>
 
+<%= link "New category", to: category_path(@conn, :new) %>
+
 <table class="table">
   <thead>
     <tr>
@@ -25,4 +27,4 @@
   </tbody>
 </table>
 
-<%= link "New category", to: category_path(@conn, :new) %>
+

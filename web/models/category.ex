@@ -16,4 +16,8 @@ defmodule Monedge.Category do
     |> cast(params, [:name, :description])
     |> validate_required([:name, :description])
   end
+
+  def accountTypes() do
+    [:current, :savings, :credit, :mortgage]
+  end
 end

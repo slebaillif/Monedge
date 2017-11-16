@@ -1,5 +1,7 @@
 <h1>Listing Accounts</h1>
 
+<%= link "New account", to: account_path(@conn, :new) %>
+
 <table class="table">
   <tr>
     <th>Bank</th>

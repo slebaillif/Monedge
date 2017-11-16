@@ -15,8 +15,9 @@ end
 
 def changeset(struct, params  \\ %{}) do
   struct
-  |> cast(params, [:bank, :sortCode, :label ,:accountNumber ,:currency ,:accountCategory, :user_id])
+  |> cast(params, [:bank, :sortCode, :label ,:accountNumber ,:currency ,:accountCategory, :user_id, :joint_user_id])
   |> cast_assoc(:user)
+  |> cast_assoc(:joint_user)
   |> validate_required([:bank, :sortCode, :accountNumber, :currency, :user_id])
  end
 end
