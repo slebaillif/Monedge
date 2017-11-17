@@ -1,0 +1,8 @@
+<h1>Showing Tab</h1>
+
+<table class="table">
+  <tr>
+    <td><%= @tab.name %></td>
+    <td><%= @tab.currency %></td>
+  </tr>
+</table>

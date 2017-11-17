@@ -33,6 +33,7 @@ defmodule Monedge.Router do
     get "/transactions/:id/guess", TransactionController, :guess
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
     resources "/users", UserController, only: [:index, :show, :create, :new]
+    resources "/tabs", TabController, only: [:index, :show, :create, :new]
     resources "/categories", CategoryController
     resources "/transactions", TransactionController
   end
