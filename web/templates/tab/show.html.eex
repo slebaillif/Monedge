@@ -1,5 +1,7 @@
 <h1>Showing Tab</h1>
 
+<%= link "Associate accounts", to: tab_path(@conn, :assoc_accounts_edit, @tab.id) %>
+
 <table class="table">
   <tr>
     <td><%= @tab.name %></td>

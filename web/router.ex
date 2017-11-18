@@ -34,6 +34,8 @@ defmodule Monedge.Router do
     resources "/accounts", AccountController, only: [:index, :show, :create, :new]
     resources "/users", UserController, only: [:index, :show, :create, :new]
     resources "/tabs", TabController, only: [:index, :show, :create, :new]
+    get "/tabs/:id/asoc_account", TabController, :assoc_accounts_edit
+    post "/tabs/asoc_account_up", TabController, :assoc_accounts_update
     resources "/categories", CategoryController
     resources "/transactions", TransactionController
   end

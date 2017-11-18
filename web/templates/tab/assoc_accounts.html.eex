@@ -1,0 +1,11 @@
+<h1>Associate accounts to tab</h1>
+<%= form_for @changeset, tab_path(@conn, :assoc_accounts_update), fn f -> %>
+
+<div class="form-group">
+    <%= label f, :account_id, class: "control-label" %>
+    <%= select f, :account_id, Map.get(@changeset,:accounts) %>
+    <%= error_tag f, :accounts %>
+  </div>
+
+<%= submit "Associate account", class: "btn btn-primary" %>
+<% end %>

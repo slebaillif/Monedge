@@ -3,6 +3,7 @@ defmodule Monedge.TabController do
     use Monedge.Web, :controller
     use Timex
     alias Monedge.Tab
+    alias Monedge.Account
   
     def index(conn, _params) do
       tabs = Repo.all(Monedge.Tab)
@@ -30,6 +31,16 @@ defmodule Monedge.TabController do
         {:error, changeset} -> render(conn, "new.html", changeset: changeset)
       end
     end
+
+    def assoc_accounts_edit(conn, %{"id" => id}) do
+      tab = Repo.get!(Tab, id)|> Repo.preload(:accounts);
+      accountsList = Repo.all(Account) |> Enum.map (fn m -> {m.bank, m.id} end)
+      changeset = Tab.changeset(tab) |> Map.put(:accounts, accountsList)
+      render(conn, "assoc_accounts.html", tab: tab, changeset: changeset)
+    end
    
+    def assoc_accounts_update(conn, %{"id" => id}) do
+      
+    end
   end
   
