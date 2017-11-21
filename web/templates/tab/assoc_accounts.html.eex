@@ -1,5 +1,5 @@
 <h1>Associate accounts to tab</h1>
-<%= form_for @changeset, tab_path(@conn, :assoc_accounts_update), fn f -> %>
+<%= form_for @changeset, tab_path(@conn, :assoc_accounts_update, @tab.id), fn f -> %>
 
 <div class="form-group">
     <%= label f, :account_id, class: "control-label" %>

@@ -3,8 +3,18 @@
 <%= link "Associate accounts", to: tab_path(@conn, :assoc_accounts_edit, @tab.id) %>
 
 <table class="table">
+<tr>
+    <th>Name</th>
+    <th>Currency</th>
+    <th>Linked account(s)</th>
+  </tr>
   <tr>
     <td><%= @tab.name %></td>
     <td><%= @tab.currency %></td>
+    <td>
+      <%= for account <- @tab.accounts do %>
+      <%= account.bank %> - <%=  account.accountNumber %><br>
+      <% end %>
+    </td>
   </tr>
 </table>

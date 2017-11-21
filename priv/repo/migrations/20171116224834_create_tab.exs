@@ -14,13 +14,11 @@ defmodule Monedge.Repo.Migrations.CreateTab do
     create table(:tabs_transactions) do
       add :tab_id, references(:tabs)
       add :transaction_id, references(:transactions)
-      timestamps()
     end
 
     create table(:tabs_accounts) do
       add :tab_id, references(:tabs)
       add :account_id, references(:accounts)
-      timestamps()
     end
     
   end
